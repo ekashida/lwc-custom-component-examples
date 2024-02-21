@@ -11,8 +11,11 @@
       }
     },
     {
-      // We can safely disable this because it's a native web component and not an LWC component
-      "files": ["componentBundleJavascriptFile/myCounter.js"],
+      // We can safely disable these because they're native web components and not LWC components
+      "files": [
+        "componentBundleJavascriptFile/myCounter.js",
+        "componentJavascriptFile.js"
+      ],
       "rules": {
         "@lwc/lwc/no-inner-html": "off"
       }

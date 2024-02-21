@@ -1,3 +1,5 @@
+import { LightningElement, api } from "lwc";
+
 class MyCounter extends HTMLElement {
   get label() {
     return this._shadowRoot.querySelector("#label").textContent;
@@ -25,3 +27,7 @@ class MyCounter extends HTMLElement {
 }
 
 customElements.define("my-counter", MyCounter);
+
+export default class ComponentJavascriptFile extends LightningElement {
+  @api label = "Click Count";
+}
