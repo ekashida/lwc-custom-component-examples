@@ -9,6 +9,13 @@
       "env": {
         "node": true
       }
+    },
+    {
+      // We can safely disable this because it's a native web component and not an LWC component
+      "files": ["componentBundleJavascriptFile/myCounter.js"],
+      "rules": {
+        "@lwc/lwc/no-inner-html": "off"
+      }
     }
   ]
 }
