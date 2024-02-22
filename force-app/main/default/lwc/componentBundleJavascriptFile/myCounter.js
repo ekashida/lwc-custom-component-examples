@@ -1,20 +1,20 @@
 class MyCounter extends HTMLElement {
   get label() {
-    return this._shadowRoot.querySelector("#label").textContent;
+    return this.shadowRoot.querySelector("#label").textContent;
   }
   set label(value) {
-    this._shadowRoot.querySelector("#label").textContent = value;
+    this.shadowRoot.querySelector("#label").textContent = value;
   }
 
   constructor() {
     super();
-    this._shadowRoot = this.attachShadow({ mode: "open" });
-    this._shadowRoot.innerHTML = `
+    this.attachShadow({ mode: "open" });
+    this.shadowRoot.innerHTML = `
       <button>
           <span id="label">My Counter</span>:
           <span id="count">0</span>
       </button>`;
-    this._shadowRoot
+    this.shadowRoot
       .querySelector("button")
       .addEventListener("click", (event) => {
         const button = event.currentTarget;
