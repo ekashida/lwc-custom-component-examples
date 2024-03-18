@@ -86,16 +86,14 @@ const getCompatibleStyle = supportsAdoptingStyleSheets ||
 const { is, defineProperty, getOwnPropertyDescriptor, getOwnPropertyNames, getOwnPropertySymbols, getPrototypeOf, } = Object;
 const global$1 = globalThis;
 let issueWarning$2;
-const trustedTypes$1 = global$1
-    .trustedTypes;
+const trustedTypes$1 = undefined;
 const emptyStringForBooleanAttribute = trustedTypes$1
     ? trustedTypes$1.emptyScript
     : '';
 const polyfillSupport$2 = global$1.reactiveElementPolyfillSupportDevMode
     ;
 {
-    const issuedWarnings = (global$1.litIssuedWarnings ??=
-        new Set());
+    const issuedWarnings = (global$1.litIssuedWarnings = global$1.litIssuedWarnings || new Set());
     issueWarning$2 = (code, warning) => {
         warning += ` See https://lit.dev/msg/${code} for more information.`;
         if (!issuedWarnings.has(warning)) {
@@ -164,13 +162,13 @@ const defaultPropertyDeclaration = {
     reflect: false,
     hasChanged: notEqual,
 };
-Symbol.metadata ??= Symbol('metadata');
-global$1.litPropertyMetadata ??= new WeakMap();
+Symbol.metadata = Symbol.metadata || Symbol('metadata');
+global$1.litPropertyMetadata = global$1.litPropertyMetadata || new WeakMap();
 class ReactiveElement
  extends HTMLElement {
     static addInitializer(initializer) {
         this.__prepare();
-        (this._initializers ??= []).push(initializer);
+        (this._initializers = this._initializers || []).push(initializer);
     }
     static get observedAttributes() {
         this.finalize();
@@ -323,7 +321,7 @@ class ReactiveElement
         this.constructor._initializers?.forEach((i) => i(this));
     }
     addController(controller) {
-        (this.__controllers ??= new Set()).add(controller);
+        (this.__controllers = this.__controllers || new Set()).add(controller);
         if (this.renderRoot !== undefined && this.isConnected) {
             controller.hostConnected?.();
         }
@@ -352,7 +350,7 @@ class ReactiveElement
         return renderRoot;
     }
     connectedCallback() {
-        this.renderRoot ??=
+        this.renderRoot = this.renderRoot ||
             this.createRenderRoot();
         this.enableUpdating(true);
         this.__controllers?.forEach((c) => c.hostConnected?.());
@@ -412,7 +410,7 @@ class ReactiveElement
             if (name instanceof Event) {
                 issueWarning$2(``, `The requestUpdate() method was called with an Event as the property name. This is probably a mistake caused by binding this.requestUpdate as an event listener. Instead bind a function that will call it with no arguments: () => this.requestUpdate()`);
             }
-            options ??= this.constructor.getPropertyOptions(name);
+            options = options || this.constructor.getPropertyOptions(name);
             const hasChanged = options.hasChanged ?? notEqual;
             const newValue = this[name];
             if (hasChanged(newValue, oldValue)) {
@@ -431,7 +429,7 @@ class ReactiveElement
             this._$changedProperties.set(name, oldValue);
         }
         if (options.reflect === true && this.__reflectingProperty !== name) {
-            (this.__reflectingProperties ??= new Set()).add(name);
+            (this.__reflectingProperties = this.__reflectingProperties || new Set()).add(name);
         }
     }
     async __enqueueUpdate() {
@@ -465,7 +463,7 @@ class ReactiveElement
         }
         debugLogEvent$1?.({ kind: 'update' });
         if (!this.hasUpdated) {
-            this.renderRoot ??=
+            this.renderRoot = this.renderRoot ||
                 this.createRenderRoot();
             {
                 const ctor = this.constructor;
@@ -586,7 +584,7 @@ polyfillSupport$2?.({ ReactiveElement });
         }
     };
 }
-(global$1.reactiveElementVersions ??= []).push('2.0.4');
+(global$1.reactiveElementVersions = global$1.reactiveElementVersions || []).push('2.0.4');
 if (global$1.reactiveElementVersions.length > 1) {
     issueWarning$2('multiple-versions', `Multiple versions of Lit loaded. Loading multiple versions ` +
         `is not recommended.`);
@@ -606,7 +604,7 @@ const debugLogEvent = (event) => {
 let debugLogRenderId = 0;
 let issueWarning$1;
 {
-    global.litIssuedWarnings ??= new Set();
+    global.litIssuedWarnings = global.litIssuedWarnings || new Set();
     issueWarning$1 = (code, warning) => {
         warning += code
             ? ` See https://lit.dev/msg/${code} for more information.`
@@ -622,7 +620,7 @@ const wrap = global.ShadyDOM?.inUse &&
     global.ShadyDOM?.noPatch === true
     ? global.ShadyDOM.wrap
     : (node) => node;
-const trustedTypes = global.trustedTypes;
+const trustedTypes = undefined;
 const policy = trustedTypes
     ? trustedTypes.createPolicy('lit-html', {
         createHTML: (s) => s,
@@ -885,7 +883,7 @@ class Template {
                     const strings = node.textContent.split(marker);
                     const lastIndex = strings.length - 1;
                     if (lastIndex > 0) {
-                        node.textContent = trustedTypes
+                        node.textContent = undefined
                             ? trustedTypes.emptyScript
                             : '';
                         for (let i = 0; i < lastIndex; i++) {
@@ -960,7 +958,7 @@ function resolveDirective(part, value, parent = part, attributeIndex) {
             currentDirective._$initialize(part, parent, attributeIndex);
         }
         if (attributeIndex !== undefined) {
-            (parent.__directives ??= [])[attributeIndex] =
+            (parent.__directives = parent.__directives || [])[attributeIndex] =
                 currentDirective;
         }
         else {
@@ -1497,7 +1495,7 @@ class ElementPart {
 const polyfillSupport$1 = global.litHtmlPolyfillSupportDevMode
     ;
 polyfillSupport$1?.(Template, ChildPart);
-(global.litHtmlVersions ??= []).push('3.1.2');
+(global.litHtmlVersions = global.litHtmlVersions || []).push('3.1.2');
 if (global.litHtmlVersions.length > 1) {
     issueWarning$1('multiple-versions', `Multiple versions of Lit loaded. ` +
         `Loading multiple versions is not recommended.`);
@@ -1545,7 +1543,7 @@ const render = (value, container, options) => {
 const JSCompiler_renameProperty = (prop, _obj) => prop;
 let issueWarning;
 {
-    const issuedWarnings = (globalThis.litIssuedWarnings ??= new Set());
+    const issuedWarnings = (globalThis.litIssuedWarnings = globalThis.litIssuedWarnings || new Set());
     issueWarning = (code, warning) => {
         warning += ` See https://lit.dev/msg/${code} for more information.`;
         if (!issuedWarnings.has(warning)) {
@@ -1562,7 +1560,7 @@ class LitElement extends ReactiveElement {
     }
     createRenderRoot() {
         const renderRoot = super.createRenderRoot();
-        this.renderOptions.renderBefore ??= renderRoot.firstChild;
+        this.renderOptions.renderBefore = this.renderOptions.renderBefore || renderRoot.firstChild;
         return renderRoot;
     }
     update(changedProperties) {
@@ -1591,7 +1589,7 @@ globalThis.litElementHydrateSupport?.({ LitElement });
 const polyfillSupport = globalThis.litElementPolyfillSupportDevMode
     ;
 polyfillSupport?.({ LitElement });
-(globalThis.litElementVersions ??= []).push('4.0.4');
+(globalThis.litElementVersions = globalThis.litElementVersions || []).push('4.0.4');
 if (globalThis.litElementVersions.length > 1) {
     issueWarning('multiple-versions', `Multiple versions of Lit loaded. Loading multiple versions ` +
         `is not recommended.`);
@@ -1635,5 +1633,9 @@ class MyElement extends LitElement {
     return `Hello, ${name}`;
   }
 }
-window.customElements.define('my-element', MyElement);
+
+if (!window.customElements.get('my-element')) {
+    window.customElements.define('my-element', MyElement);
+}
+
 export { MyElement };
