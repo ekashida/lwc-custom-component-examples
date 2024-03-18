@@ -344,7 +344,7 @@ class ReactiveElement
         }
     }
     createRenderRoot() {
-        const renderRoot = this.shadowRoot ??
+        const renderRoot = this._shadowRoot ??
             this.attachShadow(this.constructor.shadowRootOptions);
         adoptStyles(renderRoot, this.constructor.elementStyles);
         return renderRoot;
@@ -549,7 +549,7 @@ class ReactiveElement
         return true;
     }
     update(_changedProperties) {
-        this.__reflectingProperties &&= this.__reflectingProperties.forEach((p) => this.__propertyToAttribute(p, this[p]));
+        this.__reflectingProperties = this.__reflectingProperties && this.__reflectingProperties.forEach((p) => this.__propertyToAttribute(p, this[p]));
         this.__markUpdated();
     }
     updated(_changedProperties) { }
@@ -1338,8 +1338,7 @@ class AttributePart {
                 if (v === noChange) {
                     v = this._$committedValue[i];
                 }
-                change ||=
-                    !isPrimitive(v) || v !== this._$committedValue[i];
+                change = change || (!isPrimitive(v) || v !== this._$committedValue[i]);
                 if (v === nothing) {
                     value = nothing;
                 }
