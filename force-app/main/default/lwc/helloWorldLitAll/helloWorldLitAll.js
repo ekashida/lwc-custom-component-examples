@@ -1,4 +1,4 @@
 import { LightningElement } from 'lwc';
-import './lit-all-shaken.js';
+import './my-element.bundle.js';
 
 export default class HelloWorldLitAll extends LightningElement {}
